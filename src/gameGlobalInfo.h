@@ -33,6 +33,11 @@ enum EScanningComplexity
     SC_Normal,
     SC_Advanced
 };
+enum EBearingType
+{
+    BT_Normal = 0,
+    BT_Twelve
+};
 
 class GameGlobalInfo : public MultiplayerObject, public Updatable
 {
@@ -64,6 +69,7 @@ public:
     NebulaInfo nebula_info[max_nebulas];
     EPlayerWarpJumpDrive player_warp_jump_drive_setting;
     EScanningComplexity scanning_complexity;
+    EBearingType bearing_type = BT_Normal;
     /*!
      * \brief Range of the science radar.
      */

@@ -1,3 +1,4 @@
+#include "gameGlobalInfo.h"
 #include "playerInfo.h"
 #include "spaceObjects/playerSpaceship.h"
 #include "helmsScreen.h"
@@ -41,7 +42,14 @@ HelmsScreen::HelmsScreen(GuiContainer* owner)
             if (my_spaceship)
             {
                 float angle = sf::vector2ToAngle(position - my_spaceship->getPosition());
-                heading_hint->setText(string(fmodf(angle + 90.f + 360.f, 360.f), 1))->setPosition(InputHandler::getMousePos() - sf::Vector2f(0, 50))->show();
+                if (gameGlobalInfo->bearing_type == BT_Normal)
+                    heading_hint->setText(string(fmodf(angle + 90.f + 360.f, 360.f), 1))->setPosition(InputHandler::getMousePos() - sf::Vector2f(0, 50))->show(); 
+                else if (gameGlobalInfo->bearing_type == BT_Twelve)
+                    heading_hint->setText(
+                            string((int)fmodf((angle+90.f+360.f)/30, 12.f))
+                            +':'
+                            +string(fmodf((angle+90.f+360.f)/2.5f, 12.f), 1)
+                        )->setPosition(InputHandler::getMousePos() - sf::Vector2f(0, 50))->show();
                 my_spaceship->commandTargetRotation(angle);
             }
         },
@@ -49,7 +57,14 @@ HelmsScreen::HelmsScreen(GuiContainer* owner)
             if (my_spaceship)
             {
                 float angle = sf::vector2ToAngle(position - my_spaceship->getPosition());
-                heading_hint->setText(string(fmodf(angle + 90.f + 360.f, 360.f), 1))->setPosition(InputHandler::getMousePos() - sf::Vector2f(0, 50))->show();
+                if (gameGlobalInfo->bearing_type == BT_Normal)
+                    heading_hint->setText(string(fmodf(angle + 90.f + 360.f, 360.f), 1))->setPosition(InputHandler::getMousePos() - sf::Vector2f(0, 50))->show(); 
+                else if (gameGlobalInfo->bearing_type == BT_Twelve)
+                    heading_hint->setText(
+                            string((int)fmodf((angle+90.f+360.f)/30, 12.f))
+                            +':'
+                            +string(fmodf((angle+90.f+360.f)/2.5f, 12.f), 1)
+                        )->setPosition(InputHandler::getMousePos() - sf::Vector2f(0, 50))->show();
                 my_spaceship->commandTargetRotation(angle);
             }
         },

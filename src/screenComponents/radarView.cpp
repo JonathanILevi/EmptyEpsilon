@@ -651,27 +651,58 @@ void GuiRadarView::drawHeadingIndicators(sf::RenderTarget& window)
     sf::Vector2f radar_screen_center(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
     float scale = std::min(rect.width, rect.height) / 2.0f;
 
-    sf::VertexArray tigs(sf::Lines, 360/20*2);
-    for(unsigned int n=0; n<360; n+=20)
+    if (gameGlobalInfo->bearing_type == BT_Normal)
     {
-        tigs[n/20*2].position = radar_screen_center + sf::vector2FromAngle(float(n) - 90) * (scale - 20);
-        tigs[n/20*2+1].position = radar_screen_center + sf::vector2FromAngle(float(n) - 90) * (scale - 40);
+        sf::VertexArray tigs(sf::Lines, 360/20*2);
+        for(unsigned int n=0; n<360; n+=20)
+        {
+            tigs[n/20*2].position = radar_screen_center + sf::vector2FromAngle(float(n) - 90) * (scale - 20);
+            tigs[n/20*2+1].position = radar_screen_center + sf::vector2FromAngle(float(n) - 90) * (scale - 40);
+        }
+        window.draw(tigs);
+        sf::VertexArray small_tigs(sf::Lines, 360/5*2);
+        for(unsigned int n=0; n<360; n+=5)
+        {
+            small_tigs[n/5*2].position = radar_screen_center + sf::vector2FromAngle(float(n) - 90) * (scale - 20);
+            small_tigs[n/5*2+1].position = radar_screen_center + sf::vector2FromAngle(float(n) - 90) * (scale - 30);
+        }
+        window.draw(small_tigs);
+        for(unsigned int n=0; n<360; n+=20)
+        {
+            sf::Text text(string(n), *main_font, 15);
+            text.setPosition(radar_screen_center + sf::vector2FromAngle(float(n) - 90) * (scale - 45));
+            text.setOrigin(text.getLocalBounds().width / 2.0, text.getLocalBounds().height / 2.0);
+            text.setRotation(n);
+            window.draw(text);
+        }
     }
-    window.draw(tigs);
-    sf::VertexArray small_tigs(sf::Lines, 360/5*2);
-    for(unsigned int n=0; n<360; n+=5)
+    else if (gameGlobalInfo->bearing_type == BT_Twelve)
     {
-        small_tigs[n/5*2].position = radar_screen_center + sf::vector2FromAngle(float(n) - 90) * (scale - 20);
-        small_tigs[n/5*2+1].position = radar_screen_center + sf::vector2FromAngle(float(n) - 90) * (scale - 30);
-    }
-    window.draw(small_tigs);
-    for(unsigned int n=0; n<360; n+=20)
-    {
-        sf::Text text(string(n), *main_font, 15);
-        text.setPosition(radar_screen_center + sf::vector2FromAngle(float(n) - 90) * (scale - 45));
-        text.setOrigin(text.getLocalBounds().width / 2.0, text.getLocalBounds().height / 2.0);
-        text.setRotation(n);
-        window.draw(text);
+        sf::VertexArray tigs(sf::Lines, 144*2);
+        for (unsigned int n=0; n<144; n++)
+        {
+            unsigned int length = 0;
+            if (fmodf(n,12)==0)
+                length = 20;
+            else
+                length = 10;
+            float angle = float(n)*2.5f-90;
+            tigs[n*2]  .position = radar_screen_center + sf::vector2FromAngle(angle) * (scale - 20);
+            tigs[n*2+1].position = radar_screen_center + sf::vector2FromAngle(angle) * (scale - 20 - length);
+        }
+        window.draw(tigs);
+
+        for(unsigned int n=0; n<12; n++)
+        {
+            for (unsigned int sub=0; sub<3; sub++)
+            {
+                sf::Text text((sub==0?string(n):string(sub*4)), *main_font, sub==0?25:15);
+                text.setPosition(radar_screen_center + sf::vector2FromAngle(float(n)*30+float(sub)*10 - 90) * (scale - (sub==0?45:35)));
+                text.setOrigin(text.getLocalBounds().width / 2.0, text.getLocalBounds().height / 2.0);
+                text.setRotation(float(n)*30+float(sub)*10);
+                window.draw(text);
+            }
+        }
     }
 }
 
