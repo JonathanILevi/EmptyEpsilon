@@ -4,6 +4,8 @@
 #include "scienceDatabase.h"
 #include "spaceObjects/nebula.h"
 
+#include "screenComponents/logic/heading.h"
+
 #include "screenComponents/radarView.h"
 #include "screenComponents/rawScannerDataRadarOverlay.h"
 #include "screenComponents/scanTargetButton.h"
@@ -303,7 +305,7 @@ void ScienceScreen::onDraw(sf::RenderTarget& window)
 
         info_callsign->setValue(obj->getCallSign());
         info_distance->setValue(string(distance / 1000.0f, 1) + DISTANCE_UNIT_1K);
-        info_heading->setValue(string(int(heading)));
+        info_heading->setValue(showHeading(heading,true));
         info_relspeed->setValue(string(rel_velocity / 1000.0f * 60.0f, 1) + DISTANCE_UNIT_1K + "/min");
 
         string description = obj->getDescriptionFor(my_spaceship);
