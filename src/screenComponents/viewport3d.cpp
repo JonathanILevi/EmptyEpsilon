@@ -327,12 +327,26 @@ void GuiViewport3D::onDraw(sf::RenderTarget& window)
     {
         float distance = 2500.f;
         
-        for(int angle = 0; angle < 360; angle += 30)
+        if (gameGlobalInfo->bearing_type == BT_Normal)
         {
-            sf::Vector2f world_pos = my_spaceship->getPosition() + sf::vector2FromAngle(float(angle - 90)) * distance;
-            sf::Vector3f screen_pos = worldToScreen(window, sf::Vector3f(world_pos.x, world_pos.y, 0.0f));
-            if (screen_pos.z > 0.0f)
-                drawText(window, sf::FloatRect(screen_pos.x, screen_pos.y, 0, 0), string(angle), ACenter, 30, bold_font, sf::Color(255, 255, 255, 128));
+            for(int angle = 0; angle < 360; angle += 30)
+            {
+                sf::Vector2f world_pos = my_spaceship->getPosition() + sf::vector2FromAngle(float(angle - 90)) * distance;
+                sf::Vector3f screen_pos = worldToScreen(window, sf::Vector3f(world_pos.x, world_pos.y, 0.0f));
+                if (screen_pos.z > 0.0f)
+                    drawText(window, sf::FloatRect(screen_pos.x, screen_pos.y, 0, 0), string(angle), ACenter, 30, bold_font, sf::Color(255, 255, 255, 128));
+            }
+        }
+        else if (gameGlobalInfo->bearing_type == BT_Twelve)
+        {
+            for(int heading = 0; heading < 12; heading += 1)
+            {
+                float angle = float(heading)*30;
+                sf::Vector2f world_pos = my_spaceship->getPosition() + sf::vector2FromAngle(angle-90) * distance;
+                sf::Vector3f screen_pos = worldToScreen(window, sf::Vector3f(world_pos.x, world_pos.y, 0.0f));
+                if (screen_pos.z > 0.0f)
+                    drawText(window, sf::FloatRect(screen_pos.x, screen_pos.y, 0, 0), string(heading), ACenter, 30, bold_font, sf::Color(255, 255, 255, 128));
+            }
         }
     }
 #endif//FEATURE_3D_RENDERING
