@@ -2,6 +2,8 @@
 #include "spaceObjects/playerSpaceship.h"
 #include "tacticalScreen.h"
 
+#include "screenComponents/logic/heading.h"
+
 #include "screenComponents/combatManeuver.h"
 #include "screenComponents/radarView.h"
 #include "screenComponents/impulseControls.h"
@@ -133,7 +135,7 @@ void TacticalScreen::onDraw(sf::RenderTarget& window)
     if (my_spaceship)
     {
         energy_display->setValue(string(int(my_spaceship->energy_level)));
-        heading_display->setValue(string(fmodf(my_spaceship->getRotation() + 360.0 + 360.0 - 270.0, 360.0), 1));
+        heading_display->setValue(showHeading(my_spaceship->getHeading()));
         float velocity = sf::length(my_spaceship->getVelocity()) / 1000 * 60;
         velocity_display->setValue(string(velocity, 1) + DISTANCE_UNIT_1K + "/min");
 
