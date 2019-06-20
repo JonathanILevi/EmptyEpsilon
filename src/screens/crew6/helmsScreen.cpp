@@ -3,6 +3,8 @@
 #include "spaceObjects/playerSpaceship.h"
 #include "helmsScreen.h"
 
+#include "screenComponents/logic/heading.h"
+
 #include "screenComponents/radarView.h"
 #include "screenComponents/impulseControls.h"
 #include "screenComponents/warpControls.h"
@@ -42,14 +44,7 @@ HelmsScreen::HelmsScreen(GuiContainer* owner)
             if (my_spaceship)
             {
                 float angle = sf::vector2ToAngle(position - my_spaceship->getPosition());
-                if (gameGlobalInfo->bearing_type == BT_Normal)
-                    heading_hint->setText(string(fmodf(angle + 90.f + 360.f, 360.f), 1))->setPosition(InputHandler::getMousePos() - sf::Vector2f(0, 50))->show(); 
-                else if (gameGlobalInfo->bearing_type == BT_Twelve)
-                    heading_hint->setText(
-                            string((int)fmodf((angle+90.f+360.f)/30, 12.f))
-                            +':'
-                            +string(fmodf((angle+90.f+360.f)/2.5f, 12.f), 1)
-                        )->setPosition(InputHandler::getMousePos() - sf::Vector2f(0, 50))->show();
+                heading_hint->setText(showAngle(angle))->setPosition(InputHandler::getMousePos() - sf::Vector2f(0, 50))->show(); 
                 my_spaceship->commandTargetRotation(angle);
             }
         },
@@ -57,14 +52,7 @@ HelmsScreen::HelmsScreen(GuiContainer* owner)
             if (my_spaceship)
             {
                 float angle = sf::vector2ToAngle(position - my_spaceship->getPosition());
-                if (gameGlobalInfo->bearing_type == BT_Normal)
-                    heading_hint->setText(string(fmodf(angle + 90.f + 360.f, 360.f), 1))->setPosition(InputHandler::getMousePos() - sf::Vector2f(0, 50))->show(); 
-                else if (gameGlobalInfo->bearing_type == BT_Twelve)
-                    heading_hint->setText(
-                            string((int)fmodf((angle+90.f+360.f)/30, 12.f))
-                            +':'
-                            +string(fmodf((angle+90.f+360.f)/2.5f, 12.f), 1)
-                        )->setPosition(InputHandler::getMousePos() - sf::Vector2f(0, 50))->show();
+                heading_hint->setText(showAngle(angle))->setPosition(InputHandler::getMousePos() - sf::Vector2f(0, 50))->show(); 
                 my_spaceship->commandTargetRotation(angle);
             }
         },
@@ -139,7 +127,7 @@ void HelmsScreen::onDraw(sf::RenderTarget& window)
     if (my_spaceship)
     {
         energy_display->setValue(string(int(my_spaceship->energy_level)));
-        heading_display->setValue(string(my_spaceship->getHeading(), 1));
+        heading_display->setValue(showHeading(my_spaceship->getHeading()));
         float velocity = sf::length(my_spaceship->getVelocity()) / 1000 * 60;
         velocity_display->setValue(string(velocity, 1) + DISTANCE_UNIT_1K + "/min");
         
