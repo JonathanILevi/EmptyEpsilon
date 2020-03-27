@@ -34,11 +34,11 @@ HotkeyConfig::HotkeyConfig()
     newKey("MIN_IMPULSE", std::make_tuple("Max reverse impulse", ""));
     newKey("TURN_LEFT", std::make_tuple("Turn left", "Left"));
     newKey("TURN_RIGHT", std::make_tuple("Turn right", "Right"));
-    newKey("WARP_0", std::make_tuple("Warp off", ""));
-    newKey("WARP_1", std::make_tuple("Warp 1", ""));
-    newKey("WARP_2", std::make_tuple("Warp 2", ""));
-    newKey("WARP_3", std::make_tuple("Warp 3", ""));
-    newKey("WARP_4", std::make_tuple("Warp 4", ""));
+    newKey("WARP_0", std::make_tuple("Warp off", "Num0"));
+    newKey("WARP_1", std::make_tuple("Warp 1", "Num1"));
+    newKey("WARP_2", std::make_tuple("Warp 2", "Num2"));
+    newKey("WARP_3", std::make_tuple("Warp 3", "Num3"));
+    newKey("WARP_4", std::make_tuple("Warp 4", "Num4"));
     newKey("DOCK_ACTION", std::make_tuple("Dock request/abort/undock", "D"));
     newKey("DOCK_REQUEST", std::make_tuple("Initiate docking", ""));
     newKey("DOCK_ABORT", std::make_tuple("Abort docking", ""));
