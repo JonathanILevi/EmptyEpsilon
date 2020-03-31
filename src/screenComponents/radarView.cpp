@@ -47,6 +47,7 @@ void GuiRadarView::onDraw(sf::RenderTarget& window)
     if (my_spaceship && auto_rotate_on_my_ship) {
         view_rotation = my_spaceship->getRotation() + 90;
     }
+    LOG(INFO) << "Radar rotation: " << view_rotation;
 
     //Setup our textures for rendering
     adjustRenderTexture(background_texture);
